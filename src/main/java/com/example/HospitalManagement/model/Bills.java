@@ -6,9 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -18,6 +18,8 @@ public class Bills {
     private Long id;
     private Long patientId;
     private double amount;
-    private String status;
+    private String status = "UNPAID";
+    private String description;
+    private LocalDateTime billDate = LocalDateTime.now();
 
 }
