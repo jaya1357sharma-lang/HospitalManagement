@@ -22,8 +22,11 @@ public class BillsService {
     }
     public Bills generateBills(Bills bills){
         // 2. check if the patient exists first
-        Patient patient = patientRepository.findById(bills.getPatientId())
-                .orElseThrow(()-> new RuntimeException("Cannot generate the bills : Patient not found with ID " +bills.getPatientId()));
+        Patient patient = bills.getPatient();
+        if(patient == null ||patient.getId() == null){
+                throw new RuntimeException("Patient ID is required to generate a bill" );}
+                patientRepository.findById(patient.getId())
+                        .orElseThrow(() ->new RuntimeException("Cannot generate the bill : Patient not found"));
         // 3. if patient exists, save the bill
         return billsRepository.save(bills);
     }

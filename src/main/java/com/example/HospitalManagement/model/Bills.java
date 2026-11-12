@@ -1,9 +1,6 @@
 package com.example.HospitalManagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,9 +11,11 @@ import java.time.LocalDateTime;
 @Entity
 public class Bills {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long patientId;
+    @OneToOne
+    @JoinColumn(name = "patient_id",referencedColumnName = "id")
+    private Patient patient;
     private double amount;
     private String status = "UNPAID";
     private String description;

@@ -23,14 +23,23 @@ public class AppointmentService  {
         return appointmentRepository.findAll();
     }
     public Appointment bookAppointment(Appointment appointment){
-        //Check if patient id actually exist in the database
-        Patient patient = patientRepository.findById(appointment.getPatientId())
+        // 1.  patient object sent in the JSON request
+        Patient patient = appointment.getPatient();
+        if(patient == null || patient.getId() == null){
+                throw new RuntimeException("Patient ID is required");}
+        // 2. Check if that Patient actually exist in the database
+        patientRepository.findById(patient.getId())
                 .orElseThrow(() ->new RuntimeException("Patient not found"));
-        //Check if doctor id actually exist in the database
-        Doctor doctor = doctorRepository.findById(appointment.getDoctorId())
+
+        // 3. Get the Doctor object sent in the JSON request
+        Doctor doctor = appointment.getDoctor();
+        if(doctor == null || doctor.getId() == null){
+            throw new RuntimeException("Doctor ID is required");}
+        // 4. Check if that doctor actually exist in the database
+        doctorRepository.findById(doctor.getId())
                 .orElseThrow(() ->new RuntimeException("Doctor not found"));
 
-        ///  save the appointment
+        // 5. save the appointment
         return appointmentRepository.save(appointment);
 
     }
